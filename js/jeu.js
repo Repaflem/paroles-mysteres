@@ -25,20 +25,14 @@ document.addEventListener("DOMContentLoaded", function () {
             number: Number(number)
         };
 
-        // Enregistrement dans le navigateur
+        // Sauvegarde de la configuration
         localStorage.setItem(
             "parolesMysteresSettings",
             JSON.stringify(gameSettings)
         );
 
-        // Pour le moment, on vérifie que tout fonctionne
-        alert(
-            "Configuration enregistrée !\n\n" +
-            "Style : " + genre + "\n" +
-            "Époque : " + era + "\n" +
-            "Difficulté : " + difficulty + "\n" +
-            "Nombre de chansons : " + number
-        );
+        // Aller au quiz
+        window.location.href = "question.html";
 
     });
 
