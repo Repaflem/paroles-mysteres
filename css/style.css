@@ -285,3 +285,117 @@ h1 {
 .current-score strong {
     color: #ffffff;
 }
+/* =========================================================
+   RÉSULTAT D'UNE QUESTION
+   ========================================================= */
+
+.result-card {
+    margin-top: 25px;
+    padding: 30px 25px;
+
+    background: rgba(255, 255, 255, 0.05);
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    border-radius: 20px;
+
+    text-align: center;
+
+    animation: resultAppear 0.3s ease;
+}
+
+
+.result-icon {
+    font-size: 50px;
+    margin-bottom: 10px;
+}
+
+
+.result-card h2 {
+    margin: 0 0 10px;
+
+    font-size: 28px;
+}
+
+
+.result-message {
+    margin-bottom: 25px;
+
+    opacity: 0.85;
+}
+
+
+.correct-answer {
+    margin: 20px 0;
+    padding: 20px;
+
+    background: rgba(0, 0, 0, 0.2);
+
+    border-radius: 15px;
+}
+
+
+.correct-answer p {
+    margin: 6px 0;
+}
+
+
+.correct-answer p strong {
+    display: block;
+
+    margin-top: 10px;
+
+    font-size: 14px;
+
+    opacity: 0.7;
+
+    text-transform: uppercase;
+}
+
+
+#correct-artist,
+#correct-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+.points-earned {
+    margin: 20px 0;
+
+    font-size: 18px;
+}
+
+
+#points-earned {
+    font-size: 26px;
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   AUDIO
+   ========================================================= */
+
+.audio-container {
+    margin: 20px 0;
+}
+
+
+/* =========================================================
+   ANIMATION
+   ========================================================= */
+
+@keyframes resultAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
