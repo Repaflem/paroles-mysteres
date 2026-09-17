@@ -1,5 +1,3 @@
-alert("VERSION NOUVELLE QUESTION.JS");
-
 document.addEventListener("DOMContentLoaded", function () {
 
     // =========================================================
