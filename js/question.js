@@ -1,25 +1,67 @@
 // ========================================
 // PAROLES MYSTÈRES
-// MOTEUR DES QUESTIONS
+// MOTEUR DU QUIZ
 // ========================================
 
 document.addEventListener("DOMContentLoaded", function () {
 
     // ========================================
+    // QUESTIONS DE TEST
+    // ========================================
+
+    const questions = [
+
+        {
+            id: 1,
+            artist: "Artiste Test",
+            title: "La chanson mystère",
+            year: 2020,
+            genre: "pop",
+            difficulty: "easy",
+            lyrics: "« UNE PHRASE POP DE TEST ! »"
+        },
+
+        {
+            id: 2,
+            artist: "Groupe Test",
+            title: "Une autre chanson",
+            year: 1995,
+            genre: "rock",
+            difficulty: "medium",
+            lyrics: "« UNE PHRASE ROCK DE TEST ! »"
+        },
+
+        {
+            id: 3,
+            artist: "Artiste Exemple",
+            title: "Le dernier exemple",
+            year: 1985,
+            genre: "francais",
+            difficulty: "hard",
+            lyrics: "« UNE PHRASE FRANÇAISE DE TEST ! »"
+        }
+
+    ];
+
+
+    // ========================================
     // RÉCUPÉRATION DES PARAMÈTRES
     // ========================================
 
-    const settings = JSON.parse(
-        localStorage.getItem("parolesMysteresSettings")
-    );
+    const savedSettings =
+        localStorage.getItem("parolesMysteresSettings");
 
 
-    // Si aucune configuration n'existe,
-    // retour à la page de configuration
-    if (!settings) {
+    if (!savedSettings) {
+
         window.location.href = "jeu.html";
+
         return;
     }
+
+
+    const settings =
+        JSON.parse(savedSettings);
 
 
     // ========================================
@@ -28,21 +70,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let availableQuestions = questions.filter(function (question) {
 
-        // ----------------------------
-        // FILTRE DU STYLE MUSICAL
-        // ----------------------------
+
+        // STYLE MUSICAL
 
         if (
             settings.genre !== "all" &&
             question.genre !== settings.genre
         ) {
+
             return false;
+
         }
 
 
-        // ----------------------------
-        // FILTRE DE L'ÉPOQUE
-        // ----------------------------
+        // ÉPOQUE
 
         if (settings.era !== "all") {
 
@@ -51,29 +92,37 @@ document.addEventListener("DOMContentLoaded", function () {
             let endYear;
 
             if (startYear === 1960) {
+
                 endYear = 1979;
+
             } else {
+
                 endYear = startYear + 9;
+
             }
+
 
             if (
                 question.year < startYear ||
                 question.year > endYear
             ) {
+
                 return false;
+
             }
+
         }
 
 
-        // ----------------------------
-        // FILTRE DE DIFFICULTÉ
-        // ----------------------------
+        // DIFFICULTÉ
 
         if (
             settings.difficulty !== "all" &&
             question.difficulty !== settings.difficulty
         ) {
+
             return false;
+
         }
 
 
@@ -83,39 +132,43 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ========================================
-    // AUCUNE QUESTION DISPONIBLE
+    // AUCUNE QUESTION
     // ========================================
 
     if (availableQuestions.length === 0) {
 
         alert(
-            "Aucune question ne correspond aux critères sélectionnés."
+            "Aucune question ne correspond aux paramètres sélectionnés."
         );
 
         window.location.href = "jeu.html";
 
         return;
+
     }
 
 
     // ========================================
-    // CHOIX D'UNE QUESTION ALÉATOIRE
+    // CHOIX ALÉATOIRE
     // ========================================
 
-    const randomIndex = Math.floor(
-        Math.random() * availableQuestions.length
-    );
+    const randomIndex =
+        Math.floor(
+            Math.random() * availableQuestions.length
+        );
+
 
     const currentQuestion =
         availableQuestions[randomIndex];
 
 
     // ========================================
-    // AFFICHAGE DES PAROLES
+    // AFFICHAGE DE LA QUESTION
     // ========================================
 
     const lyricsElement =
         document.querySelector(".lyrics");
+
 
     if (lyricsElement) {
 
@@ -126,11 +179,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ========================================
-    // AFFICHAGE DU NUMÉRO DE QUESTION
+    // NUMÉRO DE QUESTION
     // ========================================
 
     const questionNumber =
         document.querySelector(".question-number");
+
 
     if (questionNumber) {
 
@@ -141,58 +195,60 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ========================================
-    // BOUTON DE VALIDATION
+    // VALIDATION
     // ========================================
 
-    const bouton =
+    const validateButton =
         document.getElementById("validate-answer");
 
 
-    if (!bouton) {
-        console.error(
-            "Le bouton de validation est introuvable."
+    if (validateButton) {
+
+        validateButton.addEventListener(
+            "click",
+            function () {
+
+                const artistInput =
+                    document.getElementById("artist");
+
+
+                const titleInput =
+                    document.getElementById("title");
+
+
+                const artist =
+                    artistInput.value.trim();
+
+
+                const title =
+                    titleInput.value.trim();
+
+
+                alert(
+                    "Réponse reçue !\n\n" +
+
+                    "Ta réponse :\n" +
+
+                    "Artiste : " +
+                    (artist || "Aucune réponse") +
+
+                    "\n" +
+
+                    "Titre : " +
+                    (title || "Aucune réponse") +
+
+                    "\n\n" +
+
+                    "Bonne réponse :\n" +
+
+                    currentQuestion.artist +
+                    " — " +
+                    currentQuestion.title
+                );
+
+            }
         );
 
-        return;
     }
-
-
-    bouton.addEventListener("click", function () {
-
-        // Récupération de la réponse de l'utilisateur
-
-        const artist =
-            document.getElementById("artist").value.trim();
-
-        const title =
-            document.getElementById("title").value.trim();
-
-
-        // ========================================
-        // AFFICHAGE TEMPORAIRE DU RÉSULTAT
-        // ========================================
-
-        alert(
-            "Réponse reçue !\n\n" +
-
-            "Ta réponse :\n" +
-
-            "Artiste : " +
-            (artist || "Aucune réponse") +
-            "\n" +
-
-            "Titre : " +
-            (title || "Aucune réponse") +
-
-            "\n\n" +
-
-            "Bonne réponse :\n" +
-
-            currentQuestion.artist +
-            " — " +
-            currentQuestion.title
-        );
-
-    });
 
 });
