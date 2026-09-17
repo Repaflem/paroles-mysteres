@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Question · Paroles Mystères</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+
+<body>
+
+    <main class="container">
+
+        <!-- EN-TÊTE -->
+
+        <div class="logo">🎵</div>
+
+        <p class="question-number">
+            Question 1 / 10
+        </p>
+
+
+        <!-- PAROLES -->
+
+        <section class="lyrics-card">
+
+            <p class="lyrics-intro">
+                De quelle chanson sont extraites ces paroles ?
+            </p>
+
+            <div class="lyrics">
+                « Ceci est une phrase de démonstration… »
+            </div>
+
+        </section>
+
+
+        <!-- RÉPONSE -->
+
+        <section class="answer-card">
+
+            <label for="artist">
+                🎤 Quel est l'artiste ?
+            </label>
+
+            <input
+                type="text"
+                id="artist"
+                placeholder="Nom de l'artiste"
+                autocomplete="off"
+            >
+
+
+            <label for="title">
+                🎵 Quel est le titre ?
+                <span>(bonus)</span>
+            </label>
+
+            <input
+                type="text"
+                id="title"
+                placeholder="Titre de la chanson"
+                autocomplete="off"
+            >
+
+
+            <button
+                type="button"
+                class="play-button answer-button"
+                id="validate-answer"
+            >
+                ✓ Valider ma réponse
+            </button>
+
+        </section>
+
+
+        <!-- SCORE -->
+
+        <div class="current-score">
+            Score : <strong>0</strong>
+        </div>
+
+
+        <!-- RETOUR -->
+
+        <div class="back-link">
+
+            <a href="jeu.html">
+                ← Modifier la partie
+            </a>
+
+        </div>
+
+
+        <footer class="footer">
+            Paroles Mystères · Jeu musical
+        </footer>
+
+    </main>
+
+
+    <script src="js/question.js"></script>
+
+</body>
+
+</html>
