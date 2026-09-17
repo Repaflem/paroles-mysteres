@@ -152,3 +152,53 @@ h1 {
         padding: 15px;
     }
 }
+/* ============================= */
+/* CONFIGURATION DE LA PARTIE */
+/* ============================= */
+
+.game-option {
+    text-align: left;
+    margin-bottom: 22px;
+}
+
+.game-option label {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.game-option select {
+    width: 100%;
+    padding: 14px 15px;
+    border: 1px solid #292934;
+    border-radius: 12px;
+    background: #111117;
+    color: #ffffff;
+    font-size: 15px;
+    cursor: pointer;
+    outline: none;
+}
+
+.game-option select:focus {
+    border-color: #555563;
+}
+
+.game-start-button {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.back-link {
+    margin-top: 22px;
+}
+
+.back-link a {
+    color: #777784;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.back-link a:hover {
+    color: #ffffff;
+}
