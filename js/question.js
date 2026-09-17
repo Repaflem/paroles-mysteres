@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-
+alert("question.js fonctionne !");
     const bouton = document.getElementById("validate-answer");
 
     bouton.addEventListener("click", function () {
