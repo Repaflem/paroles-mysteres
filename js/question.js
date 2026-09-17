@@ -1,253 +1,505 @@
-// ========================================
-// PAROLES MYSTÈRES
-// MOTEUR DU QUIZ
-// ========================================
-
 document.addEventListener("DOMContentLoaded", function () {
 
-    // ========================================
-    // QUESTIONS DE TEST
-    // ========================================
+    // =========================================================
+    // RÉCUPÉRATION DES ÉLÉMENTS HTML
+    // =========================================================
 
-    const questions = [
+    const lyricsElement = document.getElementById("lyrics");
+    const currentQuestionElement = document.getElementById("current-question");
+    const totalQuestionsElement = document.getElementById("total-questions");
 
-        {
-            id: 1,
-            artist: "Artiste Test",
-            title: "La chanson mystère",
-            year: 2020,
-            genre: "pop",
-            difficulty: "easy",
-            lyrics: "« UNE PHRASE POP DE TEST ! »"
-        },
+    const artistInput = document.getElementById("artist");
+    const titleInput = document.getElementById("title");
 
-        {
-            id: 2,
-            artist: "Groupe Test",
-            title: "Une autre chanson",
-            year: 1995,
-            genre: "rock",
-            difficulty: "medium",
-            lyrics: "« UNE PHRASE ROCK DE TEST ! »"
-        },
+    const validateButton = document.getElementById("validate-answer");
 
-        {
-            id: 3,
-            artist: "Artiste Exemple",
-            title: "Le dernier exemple",
-            year: 1985,
-            genre: "francais",
-            difficulty: "hard",
-            lyrics: "« UNE PHRASE FRANÇAISE DE TEST ! »"
-        }
-
-    ];
+    const scoreElement = document.getElementById("score");
 
 
-    // ========================================
-    // RÉCUPÉRATION DES PARAMÈTRES
-    // ========================================
+    // =========================================================
+    // VÉRIFICATION
+    // =========================================================
 
-    const savedSettings =
-        localStorage.getItem("parolesMysteresSettings");
+    if (!lyricsElement || !validateButton) {
+        console.error("Éléments du quiz introuvables.");
+        return;
+    }
 
-
-    if (!savedSettings) {
-
-        window.location.href = "jeu.html";
-
+    if (typeof questions === "undefined") {
+        console.error("La liste des questions est introuvable.");
+        lyricsElement.textContent = "Erreur : impossible de charger les questions.";
         return;
     }
 
 
-    const settings =
-        JSON.parse(savedSettings);
+    // =========================================================
+    // RÉCUPÉRATION DES PARAMÈTRES DU JEU
+    // =========================================================
+
+    let settings = localStorage.getItem("parolesMysteresSettings");
+
+    if (settings) {
+        settings = JSON.parse(settings);
+    } else {
+        // Paramètres par défaut
+        settings = {
+            genre: "all",
+            era: "all",
+            difficulty: "all",
+            number: 10
+        };
+    }
 
 
-    // ========================================
+    // =========================================================
+    // VARIABLES DU QUIZ
+    // =========================================================
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    let gameQuestions = [];
+
+
+    // =========================================================
+    // FONCTION DE NORMALISATION
+    // Permet de comparer les réponses plus facilement
+    // =========================================================
+
+    function normalizeText(text) {
+
+        return text
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/[^\w\s]/g, "")
+            .replace(/\s+/g, " ")
+            .trim();
+
+    }
+
+
+    // =========================================================
     // FILTRAGE DES QUESTIONS
-    // ========================================
+    // =========================================================
 
-    let availableQuestions = questions.filter(function (question) {
+    function filterQuestions() {
 
+        let filteredQuestions = questions.filter(function (question) {
 
-        // STYLE MUSICAL
-
-        if (
-            settings.genre !== "all" &&
-            question.genre !== settings.genre
-        ) {
-
-            return false;
-
-        }
-
-
-        // ÉPOQUE
-
-        if (settings.era !== "all") {
-
-            const startYear = Number(settings.era);
-
-            let endYear;
-
-            if (startYear === 1960) {
-
-                endYear = 1979;
-
-            } else {
-
-                endYear = startYear + 9;
-
-            }
-
+            // -------------------------
+            // GENRE
+            // -------------------------
 
             if (
-                question.year < startYear ||
-                question.year > endYear
+                settings.genre !== "all" &&
+                question.genre !== settings.genre
             ) {
-
                 return false;
+            }
+
+
+            // -------------------------
+            // PÉRIODE
+            // -------------------------
+
+            if (settings.era !== "all") {
+
+                if (settings.era === "1960-1979") {
+                    if (question.year < 1960 || question.year > 1979) {
+                        return false;
+                    }
+                }
+
+                if (settings.era === "1980-1989") {
+                    if (question.year < 1980 || question.year > 1989) {
+                        return false;
+                    }
+                }
+
+                if (settings.era === "1990-1999") {
+                    if (question.year < 1990 || question.year > 1999) {
+                        return false;
+                    }
+                }
+
+                if (settings.era === "2000-2009") {
+                    if (question.year < 2000 || question.year > 2009) {
+                        return false;
+                    }
+                }
+
+                if (settings.era === "2010-2019") {
+                    if (question.year < 2010 || question.year > 2019) {
+                        return false;
+                    }
+                }
+
+                if (settings.era === "2020-2026") {
+                    if (question.year < 2020 || question.year > 2026) {
+                        return false;
+                    }
+                }
 
             }
 
+
+            // -------------------------
+            // DIFFICULTÉ
+            // -------------------------
+
+            if (
+                settings.difficulty !== "all" &&
+                question.difficulty !== settings.difficulty
+            ) {
+                return false;
+            }
+
+
+            return true;
+
+        });
+
+        return filteredQuestions;
+    }
+
+
+    // =========================================================
+    // MÉLANGE ALÉATOIRE
+    // =========================================================
+
+    function shuffle(array) {
+
+        let shuffled = [...array];
+
+        for (let i = shuffled.length - 1; i > 0; i--) {
+
+            const randomIndex = Math.floor(
+                Math.random() * (i + 1)
+            );
+
+            [shuffled[i], shuffled[randomIndex]] =
+                [shuffled[randomIndex], shuffled[i]];
+
         }
 
+        return shuffled;
+    }
 
-        // DIFFICULTÉ
 
-        if (
-            settings.difficulty !== "all" &&
-            question.difficulty !== settings.difficulty
-        ) {
+    // =========================================================
+    // PRÉPARATION DU QUIZ
+    // =========================================================
+
+    function prepareGame() {
+
+        let filteredQuestions = filterQuestions();
+
+        // Mélange des questions
+        filteredQuestions = shuffle(filteredQuestions);
+
+        // Nombre demandé par le joueur
+        const numberWanted = Number(settings.number);
+
+        // On ne peut pas demander plus de questions
+        // qu'il n'en existe
+        gameQuestions = filteredQuestions.slice(
+            0,
+            numberWanted
+        );
+
+
+        // Aucun résultat
+        if (gameQuestions.length === 0) {
+
+            lyricsElement.textContent =
+                "Aucune question ne correspond à tes critères.";
+
+            validateButton.disabled = true;
 
             return false;
+        }
+
+
+        // Mise à jour du nombre total
+        totalQuestionsElement.textContent =
+            gameQuestions.length;
+
+        return true;
+    }
+
+
+    // =========================================================
+    // AFFICHER UNE QUESTION
+    // =========================================================
+
+    function displayQuestion() {
+
+        const question =
+            gameQuestions[currentQuestionIndex];
+
+
+        // Numéro de question
+        currentQuestionElement.textContent =
+            currentQuestionIndex + 1;
+
+
+        // Paroles
+        lyricsElement.textContent =
+            question.lyrics;
+
+
+        // Vider les réponses précédentes
+        artistInput.value = "";
+        titleInput.value = "";
+
+
+        // Réactiver le bouton
+        validateButton.disabled = false;
+
+
+        // Placer automatiquement le curseur
+        artistInput.focus();
+
+    }
+
+
+    // =========================================================
+    // AFFICHER LE SCORE
+    // =========================================================
+
+    function updateScore() {
+
+        scoreElement.textContent = score;
+
+    }
+
+
+    // =========================================================
+    // VÉRIFICATION DE LA RÉPONSE
+    // =========================================================
+
+    function checkAnswer() {
+
+        const question =
+            gameQuestions[currentQuestionIndex];
+
+
+        const playerArtist =
+            normalizeText(artistInput.value);
+
+        const playerTitle =
+            normalizeText(titleInput.value);
+
+
+        const correctArtist =
+            normalizeText(question.artist);
+
+        const correctTitle =
+            normalizeText(question.title);
+
+
+        let points = 0;
+
+
+        // =====================================================
+        // ARTISTE
+        // =====================================================
+
+        if (
+            playerArtist !== "" &&
+            playerArtist === correctArtist
+        ) {
+            points += 1;
+        }
+
+
+        // =====================================================
+        // TITRE
+        // =====================================================
+
+        if (
+            playerTitle !== "" &&
+            playerTitle === correctTitle
+        ) {
+            points += 1;
+        }
+
+
+        // Ajout du score
+        score += points;
+
+        updateScore();
+
+
+        // Désactiver le bouton
+        validateButton.disabled = true;
+
+
+        // Message de résultat
+        let message = "";
+
+
+        if (points === 2) {
+
+            message =
+                "🎉 Bravo ! Artiste et titre corrects !";
+
+        } else if (points === 1) {
+
+            message =
+                "👍 Bien joué ! Une seule réponse est correcte.";
+
+        } else {
+
+            message =
+                "❌ Dommage !";
 
         }
 
 
-        return true;
+        // Affichage du résultat
+        setTimeout(function () {
 
-    });
-
-
-    // ========================================
-    // AUCUNE QUESTION
-    // ========================================
-
-    if (availableQuestions.length === 0) {
-
-        alert(
-            "Aucune question ne correspond aux paramètres sélectionnés."
-        );
-
-        window.location.href = "jeu.html";
-
-        return;
-
-    }
+            alert(
+                message +
+                "\n\n" +
+                "Artiste : " + question.artist +
+                "\n" +
+                "Titre : " + question.title +
+                "\n\n" +
+                "Points gagnés : " + points
+            );
 
 
-    // ========================================
-    // CHOIX ALÉATOIRE
-    // ========================================
+            // Question suivante
+            nextQuestion();
 
-    const randomIndex =
-        Math.floor(
-            Math.random() * availableQuestions.length
-        );
-
-
-    const currentQuestion =
-        availableQuestions[randomIndex];
-
-
-    // ========================================
-    // AFFICHAGE DE LA QUESTION
-    // ========================================
-
-    const lyricsElement =
-        document.querySelector(".lyrics");
-
-
-    if (lyricsElement) {
-
-        lyricsElement.textContent =
-            currentQuestion.lyrics;
+        }, 100);
 
     }
 
 
-    // ========================================
-    // NUMÉRO DE QUESTION
-    // ========================================
+    // =========================================================
+    // QUESTION SUIVANTE
+    // =========================================================
 
-    const questionNumber =
-        document.querySelector(".question-number");
+    function nextQuestion() {
+
+        currentQuestionIndex++;
 
 
-    if (questionNumber) {
+        // Fin du quiz
+        if (
+            currentQuestionIndex >= gameQuestions.length
+        ) {
 
-        questionNumber.textContent =
-            "Question 1 / " + settings.number;
+            endGame();
+
+            return;
+        }
+
+
+        displayQuestion();
 
     }
 
 
-    // ========================================
-    // VALIDATION
-    // ========================================
+    // =========================================================
+    // FIN DU QUIZ
+    // =========================================================
 
-    const validateButton =
-        document.getElementById("validate-answer");
+    function endGame() {
 
-
-    if (validateButton) {
-
-        validateButton.addEventListener(
-            "click",
-            function () {
-
-                const artistInput =
-                    document.getElementById("artist");
+        lyricsElement.innerHTML =
+            "🏁 <strong>Partie terminée !</strong>";
 
 
-                const titleInput =
-                    document.getElementById("title");
+        artistInput.style.display = "none";
+        titleInput.style.display = "none";
+
+        validateButton.style.display = "none";
 
 
-                const artist =
-                    artistInput.value.trim();
+        currentQuestionElement.textContent =
+            gameQuestions.length;
 
 
-                const title =
-                    titleInput.value.trim();
+        scoreElement.textContent =
+            score;
 
 
-                alert(
-                    "Réponse reçue !\n\n" +
+        // Message final
+        setTimeout(function () {
 
-                    "Ta réponse :\n" +
+            alert(
+                "🏆 Partie terminée !\n\n" +
+                "Ton score : " +
+                score +
+                " / " +
+                (gameQuestions.length * 2)
+            );
 
-                    "Artiste : " +
-                    (artist || "Aucune réponse") +
+        }, 100);
 
-                    "\n" +
+    }
 
-                    "Titre : " +
-                    (title || "Aucune réponse") +
 
-                    "\n\n" +
+    // =========================================================
+    // BOUTON VALIDER
+    // =========================================================
 
-                    "Bonne réponse :\n" +
+    validateButton.addEventListener(
+        "click",
+        function () {
 
-                    currentQuestion.artist +
-                    " — " +
-                    currentQuestion.title
-                );
+            checkAnswer();
+
+        }
+    );
+
+
+    // =========================================================
+    // VALIDATION AVEC LA TOUCHE ENTRÉE
+    // =========================================================
+
+    artistInput.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Enter") {
+
+                checkAnswer();
 
             }
-        );
+
+        }
+    );
+
+
+    titleInput.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Enter") {
+
+                checkAnswer();
+
+            }
+
+        }
+    );
+
+
+    // =========================================================
+    // LANCEMENT DU JEU
+    // =========================================================
+
+    if (prepareGame()) {
+
+        displayQuestion();
+
+        updateScore();
 
     }
 
