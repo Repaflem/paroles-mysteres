@@ -19,9 +19,11 @@
             🎵
         </div>
 
-        <!-- Numéro de la question -->
+        <!-- Progression -->
         <p class="question-number">
-            Question <span id="current-question">1</span> / <span id="total-questions">10</span>
+            Question <span id="current-question">1</span>
+            /
+            <span id="total-questions">10</span>
         </p>
 
         <!-- Carte des paroles -->
@@ -38,10 +40,11 @@
         </section>
 
         <!-- Carte de réponse -->
-        <section class="answer-card">
+        <section class="answer-card" id="answer-card">
 
             <label for="artist">
                 <span>🎤 Artiste</span>
+
                 <input
                     type="text"
                     id="artist"
@@ -52,6 +55,7 @@
 
             <label for="title">
                 <span>🎵 Titre de la chanson</span>
+
                 <input
                     type="text"
                     id="title"
@@ -70,10 +74,77 @@
 
         </section>
 
+
+        <!-- Résultat de la question -->
+        <section
+            class="result-card"
+            id="result-card"
+            style="display: none;"
+        >
+
+            <div id="result-icon" class="result-icon">
+                🎉
+            </div>
+
+            <h2 id="result-title">
+                Bravo !
+            </h2>
+
+            <p id="result-message">
+                Bonne réponse !
+            </p>
+
+            <div class="correct-answer">
+
+                <p>
+                    <strong>🎤 Artiste</strong>
+                </p>
+
+                <p id="correct-artist">
+                    -
+                </p>
+
+                <p>
+                    <strong>🎵 Titre</strong>
+                </p>
+
+                <p id="correct-title">
+                    -
+                </p>
+
+            </div>
+
+            <!-- Emplacement pour l'audio -->
+            <div
+                id="audio-container"
+                class="audio-container"
+                style="display: none;"
+            >
+                <!-- L'extrait audio sera ajouté ici plus tard -->
+            </div>
+
+            <p class="points-earned">
+                <span id="points-earned">0</span>
+                point(s) gagné(s)
+            </p>
+
+            <button
+                type="button"
+                id="next-question"
+                class="play-button answer-button"
+            >
+                Question suivante →
+            </button>
+
+        </section>
+
+
         <!-- Score -->
         <p class="current-score">
-            Score : <strong id="score">0</strong>
+            Score :
+            <strong id="score">0</strong>
         </p>
+
 
         <!-- Retour -->
         <a href="jeu.html" class="back-link">
@@ -81,6 +152,7 @@
         </a>
 
     </main>
+
 
     <!-- Pied de page -->
     <footer>
