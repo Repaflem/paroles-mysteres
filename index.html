@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Paroles Mystères</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0d0d12;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 70px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: clamp(42px, 8vw, 72px);
+            font-weight: 800;
+            letter-spacing: -2px;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            color: #a7a7b3;
+            font-size: 20px;
+            margin-bottom: 45px;
+        }
+
+        .card {
+            background: #17171f;
+            border: 1px solid #292934;
+            border-radius: 24px;
+            padding: 35px;
+        }
+
+        .card h2 {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: #a7a7b3;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .play-button {
+            display: inline-block;
+            border: none;
+            border-radius: 14px;
+            padding: 17px 35px;
+            background: #ffffff;
+            color: #111111;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .play-button:hover {
+            transform: translateY(-2px);
+            background: #eeeeee;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .feature {
+            background: #111117;
+            border-radius: 16px;
+            padding: 20px 10px;
+        }
+
+        .feature-icon {
+            font-size: 27px;
+            margin-bottom: 8px;
+        }
+
+        .feature-title {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .feature-text {
+            color: #777784;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            color: #555561;
+            font-size: 12px;
+        }
+
+        @media (max-width: 550px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .card {
+                padding: 25px 18px;
+            }
+
+            .subtitle {
+                font-size: 17px;
+                margin-bottom: 30px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .feature {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="container">
+
+        <div class="logo">🎵</div>
+
+        <h1>Paroles Mystères</h1>
+
+        <p class="subtitle">
+            Reconnaîtras-tu la chanson ?
+        </p>
+
+        <section class="card">
+
+            <h2>🎤 Le blind test des paroles</h2>
+
+            <p>
+                Une phrase de chanson s'affiche.
+                À toi de retrouver l'artiste et le titre !
+                Chaque bonne réponse te rapporte des points.
+            </p>
+
+            <a href="#" class="play-button">
+                🚀 Jouer
+            </a>
+
+        </section>
+
+        <div class="features">
+
+            <div class="feature">
+                <div class="feature-icon">🎼</div>
+                <div class="feature-title">Des centaines de chansons</div>
+                <div class="feature-text">
+                    Plusieurs styles et époques
+                </div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">🏆</div>
+                <div class="feature-title">Gagne des points</div>
+                <div class="feature-text">
+                    Artiste + titre
+                </div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">🔊</div>
+                <div class="feature-title">Écoute l'extrait</div>
+                <div class="feature-text">
+                    Après chaque réponse
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer">
+            Paroles Mystères · Jeu musical
+        </div>
+
+    </main>
+
+</body>
+</html>
