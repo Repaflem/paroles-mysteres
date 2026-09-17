@@ -202,3 +202,86 @@ h1 {
 .back-link a:hover {
     color: #ffffff;
 }
+/* ============================= */
+/* ÉCRAN DE QUESTION */
+/* ============================= */
+
+.question-number {
+    color: #777784;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.lyrics-card {
+    background: #17171f;
+    border: 1px solid #292934;
+    border-radius: 24px;
+    padding: 35px 25px;
+    margin-bottom: 20px;
+}
+
+.lyrics-intro {
+    color: #a7a7b3;
+    font-size: 15px;
+    margin-bottom: 25px;
+}
+
+.lyrics {
+    font-size: clamp(22px, 5vw, 32px);
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.answer-card {
+    background: #111117;
+    border-radius: 20px;
+    padding: 25px;
+    text-align: left;
+}
+
+.answer-card label {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    margin-top: 18px;
+}
+
+.answer-card label:first-child {
+    margin-top: 0;
+}
+
+.answer-card label span {
+    color: #777784;
+    font-weight: 400;
+}
+
+.answer-card input {
+    width: 100%;
+    padding: 14px 15px;
+    border: 1px solid #292934;
+    border-radius: 12px;
+    background: #17171f;
+    color: #ffffff;
+    font-size: 16px;
+    outline: none;
+}
+
+.answer-card input:focus {
+    border-color: #555563;
+}
+
+.answer-button {
+    width: 100%;
+    margin-top: 25px;
+}
+
+.current-score {
+    margin-top: 20px;
+    color: #777784;
+    font-size: 14px;
+}
+
+.current-score strong {
+    color: #ffffff;
+}
